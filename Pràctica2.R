@@ -1,41 +1,33 @@
 "
-
 ##### Statistics in Health Sciences
-
 ### Pràctica 2
-
 "
 
 "
 ***
-
 ### Library importation and data load
-
 ***
 "
 
 library(here)
 library(epitools)
 
-load(here("breslow.RData"))
+path_sergi <- 'D:\\sergi\\UNIVERSITAT\\4 - Quart curs\\Primer semestre\\bAnalisi de dades en ciencies de la salut\\Practica2_ACS\\breslow.RData'
+
+load(path_sergi)
 Data <- breslow
 Data
 
 
 "
 *****
-
 ## 2. Comparing incidence rates
-
 *****
 "
 "
 ***
-
 ## 2.1. 
-
 Creation of the columns I_r for smokers and non smokers and IRR
-
 ***
 "
 
@@ -52,8 +44,7 @@ IRR <- Ir_smokers/Ir_Nonsmokers
 ## 2.1. 
   
 For age group 45-54, complete the following sentences with numbers and proper
-units (using \Sexpr in your Rnw document):
-
+units (using \ Sexpr in your Rnw document):
 ***
 "
 
@@ -73,18 +64,19 @@ IRR_45 <- Ir_45smoker/Ir_45Nonsmoker # rate (don't know the units)
 #      the same than among nonsmokers was . . .
 
 
+"
+***
+  
+par(mfrow = c(1, 2))
+
+plot(IRR, xaxt = 'n', xlab = 'Age groups', ylab = 'Incidence rate ratios')
+axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
 
 
+plot(log = 'y', IRR, xaxt = 'n', xlab = 'Age groups', ylab = 'Incidence rate ratios')
+axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
 
-
-
-
-
-
-
-
-
-
-
-
-
+## 2.4. 
+  
+***
+"
