@@ -1,0 +1,279 @@
+\documentclass[10pt,a4paper,twoside]{article}
+
+%%% Load some LaTeX packages:
+\usepackage[utf8]{inputenc}
+\usepackage[nottoc]{tocbibind}      % for bibliography in the table of contents
+\usepackage{hyperref}                      % link to website: \url{}.
+\usepackage[hang,footnotesize,bf]{caption} % customized caption
+\usepackage{amsmath}                       % for mathematical features 
+\usepackage[left=2.5cm,top=3cm,bottom=3cm,right=2.5cm]{geometry}   % text margins
+\usepackage{booktabs}                      % for booktabs in print(xtable)).
+\usepackage{authblk}                       % for footnote style author/affiliation
+\usepackage{parskip}
+\usepackage{amsmath}
+\usepackage{dsfont}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{cancel}
+
+
+%%% Some LaTeX "macros":
+\newcommand{\R}{\textsf{R}}
+\newcommand{\Rpackage}[1]{\textsf{#1}}
+\newcommand{\Robject}[1]{\texttt{#1}}
+
+
+<<libraries, include=FALSE>>=
+### libraries used:
+library(knitr)
+library(highlight)  # to highlight R output
+library(xtable)     # to export R output tables to LaTeX
+library(here)
+library(mice)
+library(plotrix)
+
+set.seed(1936)
+@
+
+
+<<setting, include=FALSE, purl=FALSE>>=
+### output options (there are a lot..):
+options(
+   width = 90, # max. width, in characters, of the R output. Default is 80.
+   scipen = 4  # to avoid printing inline R output numbers in scientific
+               # notation if they are lower than 10^4
+)
+
+### set global chunk options. They apply to all chuncks except to those in which
+### you set otherwise
+opts_chunk$set(
+   echo = FALSE,         # don't show R input code
+   message = TRUE,       # set to FALSE to avoid nuisance messages (be careful!)         
+   warning = TRUE,       # set to FALSE to avoid nuisance messages (be careful!)         
+   size = "footnotesize", # set the R output and output font size 
+   cache = FALSE,          # useful for computationally costly chunks (be careful!)
+   prompt = TRUE
+)
+@
+
+
+\begin{document}
+
+
+\begin{titlepage}
+  \begin{center}
+  %{\includegraphics[width=0.5\textwidth]{logo}\par}
+  %\vspace{1cm}
+  \LARGE
+  {Universitat Aut\`{o}noma de Barcelona \par}
+  
+  \vspace{1cm}
+  
+  \Large
+  \scshape{Facultat de Ci\`{e}ncies \par}
+  
+  \vspace{3cm}
+  
+  \Huge
+  \bfseries{{Assignment 2 \par}}
+  
+  \vspace{1cm}
+  
+  \Huge
+  \scshape{Missing data in linear regression models \par}
+  \vfill
+  
+  \vspace{2cm}
+  
+  \Large
+  \scshape{Statistics in Health Sciences \par}
+  \vfill
+  
+  \vspace{2cm}
+  
+
+  \Large
+  {Sergi Cant\'{o}n Sim\'{o} - 1569251 \par}
+  \Large
+  {C\`{e}lia Mart\'{i}nez Frago - 1569504 \par}
+  \Large 
+  {Goretti Pena Lorente - 1566866 \par}
+  \Large 
+  {Guillermo Raya Garc\'{i}a - 1568864 \par}
+  
+  \Large 
+  {Assignment identifier: A2 \par}
+  
+  \Large 
+  {Group identifier: G04 \par}
+  
+  \vspace{1cm}
+  \Large
+  {8/12/2022 \par}
+  
+  \vfill
+  \date{}
+  
+  \end{center}
+\end{titlepage}
+
+%\maketitle
+
+%\thispagestyle{empty}
+
+
+%%%%%%%%%%%%%%%
+%%%
+%%% Table of contents
+%%%
+%%%%%%%%%%%%%%%
+\clearpage
+\tableofcontents
+\clearpage
+
+\pagenumbering{arabic}
+
+
+
+%%%%%%%%%%%%%%%
+%%%
+%%% Section: Introduction
+%%%
+%%%%%%%%%%%%%%%
+\section{Introduction}
+\label{sec:intro}
+In 1961, Doll and Hill\cite{ref1} sent out a questionnaire to all men on the British Medical Register asking about their smoking habits. Almost $70\%$ of such men replied. Death certificates were obtained for medical practitioners and causes of death were assigned on the basis of these certificates. The \Robject{breslow} data set\cite{ref2} (attached in the \Robject{breslow.RData} file) contains the person-years of observations and deaths from coronary artery disease accumulated during the first ten years of the study. Such data are shown in Table \ref{tab:table1}.
+
+<<dataplot>>=
+load("./breslow.RData")
+Data <- breslow
+@
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrrr}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Person-years} & \multicolumn{2}{c}{Coronary deaths} \\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
+Age & Nonsmokers & Smokers & Nonsmokeres & Smokers \\
+\midrule
+\Sexpr{Data$age[1]} & \Sexpr{Data$personYears[1]} & \Sexpr{Data$personYears[6]} & \Sexpr{Data$deaths[1]} & \Sexpr{Data$deaths[6]}\\
+\Sexpr{Data$age[2]} & \Sexpr{Data$personYears[2]} & \Sexpr{Data$personYears[7]} & \Sexpr{Data$deaths[2]} & \Sexpr{Data$deaths[7]}\\
+\Sexpr{Data$age[3]} & \Sexpr{Data$personYears[3]} & \Sexpr{Data$personYears[8]} & \Sexpr{Data$deaths[3]} & \Sexpr{Data$deaths[8]}\\
+\Sexpr{Data$age[4]} & \Sexpr{Data$personYears[4]} & \Sexpr{Data$personYears[9]} & \Sexpr{Data$deaths[4]} & \Sexpr{Data$deaths[9]}\\
+\Sexpr{Data$age[5]} & \Sexpr{Data$personYears[5]} & \Sexpr{Data$personYears[10]} & \Sexpr{Data$deaths[5]} & \Sexpr{Data$deaths[10]}\\
+\bottomrule
+\end{tabular}
+\caption{Data on coronary death rates.}
+\label{tab:table1}
+\end{table}
+
+The aim of this exercise is to analyze the relationship between incidence of coronary deaths and both smoke status (exposure of interest) and age (as a potential confounder).
+
+
+%%%%%%%%%%%%%%%
+%%%
+%%% Section: Comparing incidence rates
+%%%
+%%%%%%%%%%%%%%%
+\section{Comparing incidence rates}
+\label{sec:Comparing_incidence_rates}
+\begin{enumerate}
+  \item Add extra columns in Table 1 for:
+  \begin{enumerate}
+    \item $I_{r_{ij}}$, the sample coronary death rates per 1000 person-years for smoke status $i$ ($i = 0$ for nonsmokers and $i = 1$ for smokers) and age group $j$ ($j = 0, 1, ...,4$) for 35-44, 45-54, ..., 75-84, respectively) (two columns).
+    \item $IRR_{j} = \frac{I_{r_{1j}}}{I_{r_{0j}}}$, the incidence rate ratio for smokers vs. nonsmokers for the age group $j$ (one column).
+  \end{enumerate}
+  Print the update table as Table 2, with a proper caption.
+  \item For age group 45-54, complete the following sentences with numbers and proper units:
+  \begin{enumerate}
+    \item The incidence rate among smokers was ...
+    \item The incidence rate among nonsmokers was ...
+    \item The incidence rate ratio was ...
+    \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was ...
+    \item Write a paragraph for the interpretation of previous results (including all quantities).
+  \end{enumerate}
+  \item For age group 75-84, complete the following sentences with numbers and proper units:
+  \begin{enumerate}
+    \item The incidence rate among smokers was ...
+    \item The incidence rate among nonsmokers was ...
+    \item The incidence rate ratio was ...
+    \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was ...
+    \item Write a paragraph for the interpretation of previous results (including all quantities).
+  \end{enumerate}
+  \item Create a figure, named Figure 1, as follows:
+  \begin{enumerate}
+    \item Figure 1 must include two plots, one of them on the left and another on the right. \textbf{Hint:} Use \Robject{par(mfrow = c(1, 2), ...)}.
+    \item Both plots must represent age groups in the horizontal axis and rate ratios in the vertical axis.
+    \item The plot on the right must represent the rate ratios in logarithmic scale. \textbf{Hint:} Use \Robject{plot(log = "y", ...)}.
+    \item Both plots must include proper labels in both axes and proper ticks labels (for instance, horizontal axis must show labels 35-44, 45-54, . . . ). \textbf{Hint:} Use \Robject{plot(xaxt = "n", ...)} and then use \Robject{axis(1, at = ..., labels = ...)}.
+    \item Figure 1 must include a detailed caption.
+  \end{enumerate}
+  \item According to Figure 1:
+  \begin{enumerate}
+    \item Is the rate ratio greater than 1 for all age groups? What does it means?
+    \item Is the rate ratio constant over age groups? What does it means?
+  \end{enumerate}
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%
+%%%
+%%% Section: Modeling incidence rates with a Generalized Linear Model
+%%%
+%%%%%%%%%%%%%%%
+\section{Modeling incidence rates with a Generalized Linear Model}
+\label{sec:Modelling}
+
+
+%%%%%%%%%%%%%%%
+%%%
+%%% Section: Discussion
+%%%
+%%%%%%%%%%%%%%%
+\section{Discussion}
+\label{sec:discussion}
+
+
+%%%%%%%%%%%%%%%
+%%%
+%%% References
+%%%
+%%%%%%%%%%%%%%%
+\begin{thebibliography}{99}
+
+\bibitem{ref1}Doll R, Hill A.B. Mortality of British doctors in relation to smoking: Observations on coronary thrombosis. National Cancer Institute Monograph. 1966;19:205-268.
+
+\bibitem{ref2}Breslow N.E. Cohort Analysis in Epidemiology. In A Celebration of Statistics A.C.Atkinson and S.E. Fienberg (editors). 1985;109-143. Springer-Verlag.
+
+\end{thebibliography}
+
+
+%%%%%%%%%%%%%%%
+%%%
+%%% Appendix
+%%%
+%%%%%%%%%%%%%%%
+\clearpage
+
+
+\appendix
+\section{R code}
+\label{app:Rcode}
+
+\subsection{Libraries used and data load.}
+\label{app:Library and data}
+<<echo=TRUE, eval=FALSE, purl=FALSE>>=
+<<libraries>>
+@
+
+<<echo=TRUE, eval=FALSE, purl=FALSE>>=
+<<dataplot>>
+@
+
+
+\end{document}
