@@ -48,7 +48,7 @@ options(
                # notation if they are lower than 10^4
 )
 
-### set global chunk options. They apply to all chuncks except to those in which
+### set global chunk options. They apply to all chunks except to those in which
 ### you set otherwise
 opts_chunk$set(
    echo = FALSE,         # don't show R input code
@@ -215,8 +215,8 @@ The aim of this exercise is to analyze the relationship between incidence of cor
   \end{enumerate}
   \item According to Figure 1:
   \begin{enumerate}
-    \item Is the rate ratio greater than 1 for all age groups? What does it means?
-    \item Is the rate ratio constant over age groups? What does it means?
+    \item Is the rate ratio greater than 1 for all age groups? What does it mean?
+    \item Is the rate ratio constant over age groups? What does it mean?
   \end{enumerate}
 \end{enumerate}
 
