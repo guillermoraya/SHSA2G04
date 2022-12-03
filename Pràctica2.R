@@ -41,7 +41,7 @@ IRR <- Ir_smokers/Ir_Nonsmokers
 "
 ***
   
-## 2.1. 
+## 2.2. 
   
 For age group 45-54, complete the following sentences with numbers and proper
 units (using \ Sexpr in your Rnw document):
@@ -66,7 +66,30 @@ IRR_45 <- Ir_45smoker/Ir_45Nonsmoker # rate (don't know the units)
 
 "
 ***
+## 2.3. 
   
+For age group 75-84, complete the following sentences with numbers and proper
+units (using \ Sexpr in your Rnw document):
+***
+"
+### a) The incidence rate among smokers was...
+
+Ir_75smoker <- Ir_smokers[5]/1000 # person per year
+
+### b) The incidence rate among nonsmokers was...
+
+Ir_75Nonsmoker <- Ir_Nonsmokers[5]/1000 # person per year
+
+### c) The incidence rate ratio was...
+
+IRR_75 <- Ir_75smoker/Ir_75Nonsmoker # rate (don't know the units)
+
+### d) The p-value of the Wald test to decide if the incidence rate among smokers is
+#      the same than among nonsmokers was . . .
+
+
+
+## 2.4.
 par(mfrow = c(1, 2))
 
 plot(IRR, xaxt = 'n', xlab = 'Age groups', ylab = 'Incidence rate ratios')
@@ -75,8 +98,5 @@ axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
 
 plot(log = 'y', IRR, xaxt = 'n', xlab = 'Age groups', ylab = 'Incidence rate ratios')
 axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
-
-## 2.4. 
   
-***
-"
+
