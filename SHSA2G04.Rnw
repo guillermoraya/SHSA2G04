@@ -210,7 +210,7 @@ The aim of this exercise is to analyze the relationship between incidence of cor
     \item Figure 1 must include two plots, one of them on the left and another on the right. \textbf{Hint:} Use \Robject{par(mfrow = c(1, 2), ...)}.
     \item Both plots must represent age groups in the horizontal axis and rate ratios in the vertical axis.
     \item The plot on the right must represent the rate ratios in logarithmic scale. \textbf{Hint:} Use \Robject{plot(log = "y", ...)}.
-    \item Both plots must include proper labels in both axes and proper ticks labels (for instance, horizontal axis must show labels 35-44, 45-54, . . . ). \textbf{Hint:} Use \Robject{plot(xaxt = "n", ...)} and then use \Robject{axis(1, at = ..., labels = ...)}.
+    \item Both plots must include proper labels in both axes and proper ticks labels (for instance, horizontal axis must show labels 35-44, 45-54, ...). \textbf{Hint:} Use \Robject{plot(xaxt = "n", ...)} and then use \Robject{axis(1, at = ..., labels = ...)}.
     \item Figure 1 must include a detailed caption.
   \end{enumerate}
   \item According to Figure 1:
@@ -228,6 +228,12 @@ The aim of this exercise is to analyze the relationship between incidence of cor
 %%%%%%%%%%%%%%%
 \section{Modeling incidence rates with a Generalized Linear Model}
 \label{sec:Modelling}
+
+\begin{enumerate}
+  \item Note that the logarithm function in model (1) implies that we are assuming that the incidence rate varies exponentially with age. Is it consistent with Figure 1? Why?
+  
+No, it is not consistent with Figure 1. At first, might seem that on the left plot there is plotted an exponential function. Nevertheless, on the right plot, which is the same function plotted on the log-linear scale, there should be a straight line which clearly it is not.
+\end{enumerate}
 
 
 %%%%%%%%%%%%%%%
