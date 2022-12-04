@@ -12,9 +12,9 @@
 library(here)
 library(epitools)
 
-path_sergi <- 'D:\\sergi\\UNIVERSITAT\\4 - Quart curs\\Primer semestre\\bAnalisi de dades en ciencies de la salut\\Practica2_ACS\\breslow.RData'
-
-load(path_sergi)
+#path_sergi <- 'D:\\sergi\\UNIVERSITAT\\4 - Quart curs\\Primer semestre\\bAnalisi de dades en ciencies de la salut\\Practica2_ACS\\breslow.RData'
+setwd(here())
+load('breslow.RData')
 Data <- breslow
 Data
 
@@ -58,10 +58,13 @@ Ir_45Nonsmoker <- Ir_Nonsmokers[2]/1000 # person per year
 
 ### c) The incidence rate ratio was...
 
-IRR_45 <- Ir_45smoker/Ir_45Nonsmoker # rate (don't know the units)
+IRR_45 <- Ir_45smoker/Ir_45Nonsmoker # rate (no units, since it's a dimensionless magnitude)
 
 ### d) The p-value of the Wald test to decide if the incidence rate among smokers is
 #      the same than among nonsmokers was . . .
+Data45 <- Data[Data$age=="45-54",]
+pValue45 <- rateratio.wald(x=Data45$deaths,y=Data45$personYears,)$p.value[2,"wald"]
+
 
 
 "
@@ -82,11 +85,12 @@ Ir_75Nonsmoker <- Ir_Nonsmokers[5]/1000 # person per year
 
 ### c) The incidence rate ratio was...
 
-IRR_75 <- Ir_75smoker/Ir_75Nonsmoker # rate (don't know the units)
+IRR_75 <- Ir_75smoker/Ir_75Nonsmoker # rate (no units, since it is dimensionless)
 
 ### d) The p-value of the Wald test to decide if the incidence rate among smokers is
 #      the same than among nonsmokers was . . .
-
+Data75 <- Data[Data$age=="75-84",]
+pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wald"]
 
 
 ## 2.4.
