@@ -159,7 +159,7 @@ Data <- breslow
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Person-years} & \multicolumn{2}{c}{Coronary deaths} \\
 \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
-Age & Nonsmokers & Smokers & Nonsmokeres & Smokers \\
+Age & Nonsmokers & Smokers & Nonsmokers & Smokers \\
 \midrule
 \Sexpr{Data$age[1]} & \Sexpr{Data$personYears[1]} & \Sexpr{Data$personYears[6]} & \Sexpr{Data$deaths[1]} & \Sexpr{Data$deaths[6]}\\
 \Sexpr{Data$age[2]} & \Sexpr{Data$personYears[2]} & \Sexpr{Data$personYears[7]} & \Sexpr{Data$deaths[2]} & \Sexpr{Data$deaths[7]}\\
