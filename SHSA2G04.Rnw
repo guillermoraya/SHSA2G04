@@ -35,7 +35,6 @@ library(xtable)     # to export R output tables to LaTeX
 library(here)
 library(mice)
 library(plotrix)
-library(epitools)
 
 set.seed(1936)
 @
@@ -52,7 +51,7 @@ options(
 ### set global chunk options. They apply to all chunks except to those in which
 ### you set otherwise
 opts_chunk$set(
-   echo = FALSE,         # don't show R input code
+   echo = TRUE,         # don't show R input code
    message = TRUE,       # set to FALSE to avoid nuisance messages (be careful!)         
    warning = TRUE,       # set to FALSE to avoid nuisance messages (be careful!)         
    size = "footnotesize", # set the R output and output font size 
@@ -160,7 +159,7 @@ Data <- breslow
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Person-years} & \multicolumn{2}{c}{Coronary deaths} \\
 \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
-Age & Nonsmokers & Smokers & Nonsmokers & Smokers \\
+Age & Nonsmokers & Smokers & Nonsmokeres & Smokers \\
 \midrule
 \Sexpr{Data$age[1]} & \Sexpr{Data$personYears[1]} & \Sexpr{Data$personYears[6]} & \Sexpr{Data$deaths[1]} & \Sexpr{Data$deaths[6]}\\
 \Sexpr{Data$age[2]} & \Sexpr{Data$personYears[2]} & \Sexpr{Data$personYears[7]} & \Sexpr{Data$deaths[2]} & \Sexpr{Data$deaths[7]}\\
@@ -183,74 +182,56 @@ The aim of this exercise is to analyze the relationship between incidence of cor
 %%%%%%%%%%%%%%%
 \section{Comparing incidence rates}
 \label{sec:Comparing_incidence_rates}
-
-<<section2ex1>>=
-### a) I_r
-Ir_smokers <- Data$deaths[Data$smoker=='yes']/Data$personYears[Data$smoker=='yes']*1000
-Ir_Nonsmokers <- Data$deaths[Data$smoker=='no']/Data$personYears[Data$smoker=='no']*1000
-
-### b) IRR
-IRR <- Ir_smokers/Ir_Nonsmokers
-@
-
-<<section2ex2>>=
-### a) The incidence rate among smokers was...
-
-Ir_45smoker <- Ir_smokers[2]/1000 # person per year
-
-### b) The incidence rate among nonsmokers was...
-
-Ir_45Nonsmoker <- Ir_Nonsmokers[2]/1000 # person per year
-
-### c) The incidence rate ratio was...
-
-IRR_45 <- Ir_45smoker/Ir_45Nonsmoker # rate (no units, since it's a dimensionless magnitude)
-
-### d) The p-value of the Wald test to decide if the incidence rate among smokers is
-#      the same than among nonsmokers was . . .
-Data45 <- Data[Data$age=="45-54",]
-pValue45 <- rateratio.wald(x=Data45$deaths,y=Data45$personYears,)$p.value[2,"wald"]
-@
-
-<<section2ex3>>=
-### a) The incidence rate among smokers was...
-
-Ir_75smoker <- Ir_smokers[5]/1000 # person per year
-
-### b) The incidence rate among nonsmokers was...
-
-Ir_75Nonsmoker <- Ir_Nonsmokers[5]/1000 # person per year
-
-### c) The incidence rate ratio was...
-
-IRR_75 <- Ir_75smoker/Ir_75Nonsmoker # rate (no units, since it is dimensionless)
-
-### d) The p-value of the Wald test to decide if the incidence rate among smokers is
-#      the same than among nonsmokers was . . .
-Data75 <- Data[Data$age=="75-84",]
-pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wald"]
-@
 \begin{enumerate}
   \item Add extra columns in Table 1 for:
   \begin{enumerate}
     \item $I_{r_{ij}}$, the sample coronary death rates per 1000 person-years for smoke status $i$ ($i = 0$ for nonsmokers and $i = 1$ for smokers) and age group $j$ ($j = 0, 1, ...,4$) for 35-44, 45-54, ..., 75-84, respectively) (two columns).
+<<Ir>>=
+Ir_smokers <- Data$deaths[Data$smoker=='yes']/Data$personYears[Data$smoker=='yes']*1000
+Ir_Nonsmokers <- Data$deaths[Data$smoker=='no']/Data$personYears[Data$smoker=='no']*1000
+@
     \item $IRR_{j} = \frac{I_{r_{1j}}}{I_{r_{0j}}}$, the incidence rate ratio for smokers vs. nonsmokers for the age group $j$ (one column).
+<<IRR>>=
+IRR <- Ir_smokers/Ir_Nonsmokers
+@
   \end{enumerate}
   Print the update table as Table 2, with a proper caption.
   \item For age group 45-54, complete the following sentences with numbers and proper units:
+<<IncidenceRates2>>=
+# a)
+Ir_45smoker <- Ir_smokers[2] # 1000 person per year
+# b)
+Ir_45Nonsmoker <- Ir_Nonsmokers[2] # 1000 person per year
+# c) 
+IRR_45 <- Ir_45smoker/Ir_45Nonsmoker # rate (no units, since it's a dimensionless magnitude)
+# d)
+Data45 <- Data[Data$age=="45-54",]
+pValue45 <- rateratio.wald(x=Data45$deaths,y=Data45$personYears,)$p.value[2,"wald"]
+@
   \begin{enumerate}
-    \item The incidence rate among smokers was: \Sexpr{Ir_45smoker}
-    \item The incidence rate among nonsmokers was: \Sexpr{Ir_45Nonsmoker}
-    \item The incidence rate ratio was: \Sexpr{IRR_45}
-    \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was: \Sexpr{pValue45}
+    \item The incidence rate among smokers was \Sexpr{Ir_45smoker} 1000 person per year.
+    \item The incidence rate among nonsmokers was \Sexpr{Ir_45Nonsmoker} 1000 person per year.
+    \item The incidence rate ratio was \Sexpr{IRR_45}.
+    \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue45}.
     \item Write a paragraph for the interpretation of previous results (including all quantities).
   \end{enumerate}
   \item For age group 75-84, complete the following sentences with numbers and proper units:
+<<IncidenceRates3>>=
+# a)
+Ir_75smoker <- Ir_smokers[5]/10 # 100 person per year
+# b)
+Ir_75Nonsmoker <- Ir_Nonsmokers[5]/10 # 100 person per year
+# c) 
+IRR_75 <- Ir_75smoker/Ir_75Nonsmoker # rate (no units, since it is dimensionless)
+# d)
+Data75 <- Data[Data$age=="75-84",]
+pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wald"]
+@
   \begin{enumerate}
-    \item The incidence rate among smokers was: \Sexpr{Ir_75smoker}
-    \item The incidence rate among nonsmokers was: \Sexpr{Ir_75Nonsmoker}
-    \item The incidence rate ratio was: \Sexpr{IRR_75}
-    \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was: \Sexpr{pValue75}
+    \item The incidence rate among smokers was \Sexpr{Ir_75smoker} 100 person per year.
+    \item The incidence rate among nonsmokers was \Sexpr{Ir_75Nonsmoker} 100 person per year.
+    \item The incidence rate ratio was \Sexpr{IRR_75}.
+    \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue75}.
     \item Write a paragraph for the interpretation of previous results (including all quantities).
   \end{enumerate}
   \item Create a figure, named Figure 1, as follows:
