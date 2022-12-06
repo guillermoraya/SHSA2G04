@@ -19,12 +19,17 @@
 \usepackage{float}
 \usepackage{caption}
 \usepackage{cancel}
+\usepackage{nccmath}
+\usepackage{geometry}
+\usepackage{amsfonts} 
+\usepackage{bbm}
 
 
 %%% Some LaTeX "macros":
 \newcommand{\R}{\textsf{R}}
 \newcommand{\Rpackage}[1]{\textsf{#1}}
 \newcommand{\Robject}[1]{\texttt{#1}}
+\newcommand*{\QEDB}{\null\nobreak\hfill\ensuremath{\blacksquare}}
 
 
 <<libraries, include=FALSE>>=
@@ -266,6 +271,32 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
   \item Note that the logarithm function in model (1) implies that we are assuming that the incidence rate varies exponentially with age. Is it consistent with Figure 1? Why?
   
 No, it is not consistent with Figure 1. At first, might seem that on the left plot there is plotted an exponential function. Nevertheless, on the right plot, which is the same function plotted on the log-linear scale, there should be a straight line which clearly it is not.
+
+  \item Prove that, under model (1), the expected IRR for smokers vs nonsmokers, for a given age group j is:
+  
+\begin{equation}
+        IRR_{j} = \begin{cases} \text{exp}(\beta_1), & \mbox{if $j = 0$,} \\ \text{exp}(\beta_1 + \delta_{1j}), & \mbox{if $j \not= 0$.} \end{cases}
+\end{equation}
+\textbf{Proof:}
+
+\begin{align}
+\label{eq:E(IRR)}
+    \mathbb{E}(IRR_{j}) =  \mathbb{E}\left(\frac{I_{r_{1j}}}{I_{r_{0j}}}\right) =  \frac{\mathbb{E}(I_{r_{1j}})}{\mathbb{E}(I_{r_{0j}})} = \begin{cases} (I), & \mbox{if $j = 0$,} \\ (II), & \mbox{if $j \not= 0$.} \end{cases}\\[1cm]
+    (I) = \frac{\text{exp}(\alpha+\beta_{1}+0+0)}{\text{exp}(\alpha+0+0+0)} = \text{exp}(\alpha + \beta_{1} - \alpha) = \text{exp}(\beta_{1})\\[0.5cm]
+    \begin{array}{lcll}
+        (II) = \frac{\displaystyle \text{exp}(\alpha + \beta_{1} + \sum_{k=1}^{4} \gamma_{k}\mathbbm{1}_{j=k} + \displaystyle \sum_{k=1}^{4} \delta_{1k}\mathbbm{1}_{j=k})}{ \displaystyle \text{exp}(\alpha + 0 + \sum_{k=1}^{4} \gamma_{k}\mathbbm{1}_{j=k} + 0)}\\[0.2cm]
+        = \displaystyle \text{exp}(\alpha + \beta_{1} + \sum_{k=1}^{4} \gamma_{k}\mathbbm{1}_{j=k} + \sum_{k=1}^{4} \delta_{1k}\mathbbm{1}_{j=k} - \alpha - \displaystyle \sum_{k=1}^{4} \gamma_{k}\mathbbm{1}_{j=k})\\[0.2cm]
+        = \text{exp}(\beta_{1} + \delta_{1j})
+    \end{array}
+\end{align}
+
+Hence, 
+\begin{equation}
+        \mathbb{E}(IRR_{j}) = \begin{cases} e^{\beta_{1}}, & \mbox{if $j = 0$,} \\ e^{\beta_{1} + \delta_{1j}}, & \mbox{if $j \not= 0$.} \end{cases}\\
+\end{equation}
+\QEDB
+
+
 \end{enumerate}
 
 
