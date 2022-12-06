@@ -292,7 +292,7 @@ No, it is not consistent with Figure 1. At first, might seem that on the left pl
 
 Hence, 
 \begin{equation}
-        \mathbb{E}(IRR_{j}) = \begin{cases} e^{\beta_{1}}, & \mbox{if $j = 0$,} \\ e^{\beta_{1} + \delta_{1j}}, & \mbox{if $j \not= 0$.} \end{cases}\\
+        \mathbb{E}(IRR_{j}) = \begin{cases} \text{exp}(\beta_{1}), & \mbox{if $j = 0$,} \\ \text{exp}(\beta_{1} + \delta_{1j}), & \mbox{if $j \not= 0$.} \end{cases}\\
 \end{equation}
 \QEDB
 
