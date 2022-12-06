@@ -52,8 +52,9 @@ set.seed(1936)
 ### output options (there are a lot..):
 options(
    width = 90, # max. width, in characters, of the R output. Default is 80.
-   scipen = 4  # to avoid printing inline R output numbers in scientific
+   scipen = 4,# to avoid printing inline R output numbers in scientific
                # notation if they are lower than 10^4
+   digits=2
 )
 
 ### set global chunk options. They apply to all chuncks except to those in which
@@ -222,9 +223,9 @@ pValue45 <- rateratio.wald(x=Data45$deaths,y=Data45$personYears,)$p.value[2,"wal
     \item The incidence rate ratio was \Sexpr{IRR_45}.
     \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue45}.
     \item Write a paragraph for the interpretation of previous results (including all quantities):
-    \begin{itemize}
-      \item Observing the incidence rate for the age range of 45 to 54 years old, we can see that there were more cases of coronary deaths among the exposed group (\Sexpr{Ir_45smoker} cases a year per 1000 people, to be specific) than among the unexposed or "control" group (which suffered \Sexpr{Ir_45Nonsmoker} cases a year per 1000 people). Comparing the two figures, we see that the smokers had an incidence rate (or number of cases per unit of people and time) \Sexpr{IRR_45} as big as non-smokers, a figure that seems to indicate that smokers in this age group had a bigger chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being "the incidence rato of exposed and non-exposed groups are equivalent"), which yielded a p-value of \Sexpr{pValue45}. Having received a p-value lower than 0.05, we believe that the null hypothesis can be rejected: smoking seems to affect the incidence rate of coronary death among 45 to 54 year-olds.
-    \end{itemize}
+
+      Observing the incidence rate for the age range of 45 to 54 years old, we can see that there were more cases of coronary deaths among the exposed group (roughly \Sexpr{Ir_45smoker} cases a year per 1000 people, to be specific) than among the unexposed or "control" group (which suffered approximately \Sexpr{Ir_45Nonsmoker} cases a year per 1000 people). Comparing the two figures, we see that the smokers had an incidence rate nearly \Sexpr{IRR_45} times as big as non-smokers, a figure that seems to indicate that smokers in this age group had a bigger chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being "the incidence rate of exposed and non-exposed groups are equivalent"), which estimated an approximate p-value of \Sexpr{pValue45}. Having received a p-value lower than our threshold of 0.05, we believe that the null hypothesis can be rejected: the test suggests that smoking could be associated with an increased incidence rate of coronary death among our selected demographic.
+
   \end{enumerate}
   \item For age group 75-84, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
 <<IncidenceRates3, echo=FALSE>>=
@@ -244,6 +245,9 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
     \item The incidence rate ratio was \Sexpr{IRR_75}.
     \item The \textit{p}-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue75}.
     \item Write a paragraph for the interpretation of previous results (including all quantities).
+
+      Observing the incidence rate for the age range of 75 to 84 years old, we can see that there were less cases of coronary deaths among the exposed group (roughly \Sexpr{Ir_75smoker} cases a year per 1000 people, to be specific) than among the unexposed or "control" group (which suffered approximately \Sexpr{Ir_75Nonsmoker} cases a year per 1000 people). Comparing the two figures, we see that the smokers had an incidence rate about \Sexpr{IRR_75} times as big as non-smokers, a figure that seems to indicate that smokers in this age group had a smaller chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being "the incidence rate of exposed and non-exposed groups are equivalent"), which estimated an approximate p-value of \Sexpr{pValue75}. Having received such a large p-value (way over our threshold of 0.05), we believe that the null hypothesis cannot be rejected with certainty: although our data shows that less individuals in the selected demographic suffered from coronary death, it seems too likely that these results were achieved by chance, and thus we could not conclude that smoking had a clear association with the risk of coronary death in this situation.
+
   \end{enumerate}
   \item Create a figure, named Figure 1, as follows:
   \begin{enumerate}
@@ -253,7 +257,7 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
     \item Both plots must include proper labels in both axes and proper ticks labels (for instance, horizontal axis must show labels 35-44, 45-54, ...). \textbf{Hint:} Use \Robject{plot(xaxt = "n", ...)} and then use \Robject{axis(1, at = ..., labels = ...)}.
     \item Figure 1 must include a detailed caption.
   \end{enumerate}
-<<IRR_plot,fig.width=7, fig.height=4, fig.cap='\\label{fig:IRR_plot}Plots of the incidence rate ratios depending on the age range.The graph on the left is in linear scale, while the graph on the right is on logarithmic scale.'>>=
+<<IRR_plot,fig.width=7, fig.height=4, fig.cap='\\label{fig:IRR_plot}Plots of the incidence rate ratios depending on the age range.The graph on the left is in linear scale, while the graph on the right is on logarithmic scale.', echo=FALSE>>=
 
 par(mfrow = c(1, 2))
 
@@ -354,6 +358,17 @@ Hence,
 expect for $\delta_{1j}$.
 
 \item Model \eqref{eq:model} can be fitted in \textsf{R} as:
+<<modelFit>>=
+mod <- glm(deaths ~ smoker * age + offset(log(personYears)),
+           family = poisson,
+           data = breslow)
+@
+
+that provides the following results:
+
+<<modelFitResults,results='markup'>>=
+summary(mod)
+@
 
 \item According the the fitted model, complete the following list \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
 \begin{itemize}
