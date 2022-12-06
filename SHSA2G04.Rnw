@@ -22,6 +22,7 @@
 \usepackage{geometry}
 \usepackage{amsfonts} 
 \usepackage{bbm}
+\floatplacement{figure}{H}
 
 
 
@@ -168,10 +169,10 @@ Data <- breslow
 \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
 Age & Nonsmokers & Smokers & Nonsmokers & Smokers \\
 \midrule
-\Sexpr{Data$age[1]} & \Sexpr{Data$personYears[1]} & \Sexpr{Data$personYears[6]} & \Sexpr{Data$deaths[1]} & \Sexpr{Data$deaths[6]}\\
-\Sexpr{Data$age[2]} & \Sexpr{Data$personYears[2]} & \Sexpr{Data$personYears[7]} & \Sexpr{Data$deaths[2]} & \Sexpr{Data$deaths[7]}\\
-\Sexpr{Data$age[3]} & \Sexpr{Data$personYears[3]} & \Sexpr{Data$personYears[8]} & \Sexpr{Data$deaths[3]} & \Sexpr{Data$deaths[8]}\\
-\Sexpr{Data$age[4]} & \Sexpr{Data$personYears[4]} & \Sexpr{Data$personYears[9]} & \Sexpr{Data$deaths[4]} & \Sexpr{Data$deaths[9]}\\
+\Sexpr{Data$age[1]} & \Sexpr{Data$personYears[1]} & \Sexpr{Data$personYears[6]}  & \Sexpr{Data$deaths[1]} & \Sexpr{Data$deaths[6]}\\
+\Sexpr{Data$age[2]} & \Sexpr{Data$personYears[2]} & \Sexpr{Data$personYears[7]}  & \Sexpr{Data$deaths[2]} & \Sexpr{Data$deaths[7]}\\
+\Sexpr{Data$age[3]} & \Sexpr{Data$personYears[3]} & \Sexpr{Data$personYears[8]}  & \Sexpr{Data$deaths[3]} & \Sexpr{Data$deaths[8]}\\
+\Sexpr{Data$age[4]} & \Sexpr{Data$personYears[4]} & \Sexpr{Data$personYears[9]}  & \Sexpr{Data$deaths[4]} & \Sexpr{Data$deaths[9]}\\
 \Sexpr{Data$age[5]} & \Sexpr{Data$personYears[5]} & \Sexpr{Data$personYears[10]} & \Sexpr{Data$deaths[5]} & \Sexpr{Data$deaths[10]}\\
 \bottomrule
 \end{tabular}
@@ -198,12 +199,12 @@ Ir_smokers <- Data$deaths[Data$smoker=='yes']/Data$personYears[Data$smoker=='yes
 Ir_Nonsmokers <- Data$deaths[Data$smoker=='no']/Data$personYears[Data$smoker=='no']*1000
 @
     \item $IRR_{j} = \frac{I_{r_{1j}}}{I_{r_{0j}}}$, the incidence rate ratio for smokers vs. nonsmokers for the age group $j$ (one column).
-<<IRR,echo=FALSE>>=
+<<IRR, echo=FALSE>>=
 IRR <- Ir_smokers/Ir_Nonsmokers
 @
   \end{enumerate}
   Print the update table as Table 2, with a proper caption.
-  \item For age group 45-54, complete the following sentences with numbers and proper units:
+  \item For age group 45-54, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
 <<IncidenceRates2, echo=FALSE>>=
 # a)
 Ir_45smoker <- Ir_smokers[2] # coronary deaths a year per 1000 people
@@ -220,13 +221,12 @@ pValue45 <- rateratio.wald(x=Data45$deaths,y=Data45$personYears,)$p.value[2,"wal
     \item The incidence rate among nonsmokers was \Sexpr{Ir_45Nonsmoker} coronary deaths a year per 1000 people.
     \item The incidence rate ratio was \Sexpr{IRR_45}.
     \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue45}.
-    \item Write a paragraph for the interpretation of previous results (including all quantities).
     \item Write a paragraph for the interpretation of previous results (including all quantities):
     \begin{itemize}
       \item Observing the incidence rate for the age range of 45 to 54 years old, we can see that there were more cases of coronary deaths among the exposed group (\Sexpr{Ir_45smoker} cases a year per 1000 people, to be specific) than among the unexposed or "control" group (which suffered \Sexpr{Ir_45Nonsmoker} cases a year per 1000 people). Comparing the two figures, we see that the smokers had an incidence rate (or number of cases per unit of people and time) \Sexpr{IRR_45} as big as non-smokers, a figure that seems to indicate that smokers in this age group had a bigger chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being "the incidence rato of exposed and non-exposed groups are equivalent"), which yielded a p-value of \Sexpr{pValue45}. Having received a p-value lower than 0.05, we believe that the null hypothesis can be rejected: smoking seems to affect the incidence rate of coronary death among 45 to 54 year-olds.
     \end{itemize}
   \end{enumerate}
-  \item For age group 75-84, complete the following sentences with numbers and proper units:
+  \item For age group 75-84, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
 <<IncidenceRates3, echo=FALSE>>=
 # a)
 Ir_75smoker <- Ir_smokers[5] # coronary deaths a year per 1000 people
@@ -240,9 +240,9 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
 @
   \begin{enumerate}
     \item The incidence rate among smokers was \Sexpr{Ir_75smoker} coronary deaths a year per 1000 people.
-    \item The incidence rate among nonsmokers was \Sexpr{Ir_75Nonsmoker} coronary deaths a year per 1000 people.
+    \item The incidence rate among nonsmokers was \Sexpr{Ir_75Nonsmoker} coronary deaths a year per 1000 people
     \item The incidence rate ratio was \Sexpr{IRR_75}.
-    \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue75}.
+    \item The \textit{p}-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue75}.
     \item Write a paragraph for the interpretation of previous results (including all quantities).
   \end{enumerate}
   \item Create a figure, named Figure 1, as follows:
@@ -253,6 +253,20 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
     \item Both plots must include proper labels in both axes and proper ticks labels (for instance, horizontal axis must show labels 35-44, 45-54, ...). \textbf{Hint:} Use \Robject{plot(xaxt = "n", ...)} and then use \Robject{axis(1, at = ..., labels = ...)}.
     \item Figure 1 must include a detailed caption.
   \end{enumerate}
+<<IRR_plot,fig.width=7, fig.height=4, fig.cap='\\label{fig:IRR_plot}Plots of the incidence rate ratios depending on the age range.The graph on the left is in linear scale, while the graph on the right is on logarithmic scale.'>>=
+
+par(mfrow = c(1, 2))
+
+plot(IRR, xaxt = 'n', xlab = 'Age groups', ylab = 'Incidence rate ratios')
+#lines(IRR)
+axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
+
+
+plot(log = 'y', IRR, xaxt = 'n', xlab = 'Age groups', ylab = 'Incidence rate ratios')
+#lines(IRR)
+axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
+
+@
   \item According to Figure 1:
   \begin{enumerate}
     \item Is the rate ratio greater than 1 for all age groups? What does it mean?
@@ -268,7 +282,7 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
 %%%%%%%%%%%%%%%
 \section{Modeling incidence rates with a Generalized Linear Model}
 \label{sec:Modelling}
-Suppose we are interested in modeling the coronary deaths rate, $I = \frac{I}{\Delta t}$, where \textit{I} is the coronary deaths count and $\Delta t$ is follow-up (in person-years), as a function of smoking status (\textit{E}), which is the exposure of interest, and age group (\textit{A}). We suspect that smoking status could interact with age in the effect on coronary mortality. Hence, we consider the Generalized Linear Model (GLM) \footnote{You can find the \LaTeX code to write model (1) in the file \Robject{model.tex.}} specified in equations (1) to model the coronary deaths rate for individuals with smoking status \textit{i} and in age group \textit{j}, $I_{r_{ij}}$ :
+Suppose we are interested in modeling the coronary deaths rate, $I = \frac{I}{\Delta t}$, where \textit{I} is the coronary deaths count and $\Delta t$ is follow-up (in person-years), as a function of smoking status (\textit{E}), which is the exposure of interest, and age group (\textit{A}). We suspect that smoking status could interact with age in the effect on coronary mortality. Hence, we consider the Generalized Linear Model (GLM) \footnote{You can find the \LaTeX code to write model \eqref{eq:model} in the file \Robject{model.tex.}} specified in equations (1) to model the coronary deaths rate for individuals with smoking status \textit{i} and in age group \textit{j}, $I_{r_{ij}}$ :
 
 
 \begin{itemize}
@@ -302,15 +316,16 @@ Note that $I_{r_{ij}}$ is a random variable (different individuals with same smo
 \end{equation*}
 
 \begin{enumerate}
-  \item Note that the logarithm function in model (1) implies that we are assuming that the incidence rate varies exponentially with age. Is it         consistent with Figure 1? Why?
+  \item Note that the logarithm function in model \eqref{eq:model} implies that we are assuming that the incidence rate varies exponentially with age. Is it         consistent with Figure 1? Why?
 
 \textbf{Answer:}
 
 No, it is not consistent with Figure 1. At first, might seem that on the left plot there is plotted an exponential function.           Nevertheless, on the right plot, which is the same function plotted on the log-linear scale, there should be a straight line which clearly it is not.
 
-  \item Prove that, under model (1), the expected IRR for smokers vs nonsmokers, for a given age group j is:
+  \item Prove that, under model \eqref{eq:model}, the expected IRR for smokers vs nonsmokers, for a given age group j is:
   
 \begin{equation}
+\label{eq:equation2}
         IRR_{j} = \begin{cases} \text{exp}(\beta_1), & \mbox{if $j = 0$,} \\ \text{exp}(\beta_1 + \delta_{1j}), & \mbox{if $j \not= 0$.} \end{cases}
 \end{equation}
 \textbf{Proof:}
@@ -335,6 +350,35 @@ Hence,
         \mathbb{E}(IRR_{j}) = \begin{cases} \text{exp}(\beta_{1}), & \mbox{if $j = 0$,} \\ \text{exp}(\beta_{1} + \delta_{1j}), & \mbox{if $j \not= 0$.} \end{cases}\\
 \end{equation}
 \QEDB
+\item According to Figure 1, explain what sign (i.e. positive, negative or zero) do you
+expect for $\delta_{1j}$.
+
+\item Model \eqref{eq:model} can be fitted in \textsf{R} as:
+
+\item According the the fitted model, complete the following list \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
+\begin{itemize}
+    \item $\hat{\alpha}$ =
+    \item $\hat{\beta_{1}}$ =
+    \item $\hat{\gamma_{1}}$ =
+    \item $\hat{\gamma_{2}}$ =
+    \item $\hat{\gamma_{3}}$ =
+    \item $\hat{\gamma_{4}}$ =
+    \item $\hat{\delta_{1}}$ =
+    \item $\hat{\delta_{2}}$ =
+    \item $\hat{\delta_{3}}$ =
+    \item $\hat{\delta_{4}}$ =
+\end{itemize}
+
+\item Use formula \ref{eq:equation2} and estimates provided by \verb+summary(mod)+ to complete the following list \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
+\begin{itemize}
+    \item $\widehat{IRR}_{35-44}$ = 
+    \item $\widehat{IRR}_{45-54}$ = 
+    \item $\widehat{IRR}_{55-64}$ = 
+    \item $\widehat{IRR}_{65-74}$ = 
+    \item $\widehat{IRR}_{75-84}$ = 
+\end{itemize}
+
+\item Solve again questions 2. and 3. (only (a), (b) and (c)) in Section \ref{sec:Comparing_incidence_rates}, but using now model \eqref{eq:model}, formula \ref{eq:equation2} and coefficients estimates provided by \verb+summary(mod)+.
 
 \end{enumerate}
 
