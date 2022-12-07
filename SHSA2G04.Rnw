@@ -54,7 +54,7 @@ options(
    width = 90, # max. width, in characters, of the R output. Default is 80.
    scipen = 4,# to avoid printing inline R output numbers in scientific
                # notation if they are lower than 10^4
-   digits=2
+   digits = 2
 )
 
 ### set global chunk options. They apply to all chuncks except to those in which
@@ -246,7 +246,7 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
     \item The \textit{p}-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue75}.
     \item Write a paragraph for the interpretation of previous results (including all quantities).
 
-      Observing the incidence rate for the age range of 75 to 84 years old, we can see that there were less cases of coronary deaths among the exposed group (roughly \Sexpr{Ir_75smoker} cases a year per 1000 people, to be specific) than among the unexposed or "control" group (which suffered approximately \Sexpr{Ir_75Nonsmoker} cases a year per 1000 people). Comparing the two figures, we see that the smokers had an incidence rate about \Sexpr{IRR_75} times as big as non-smokers, a figure that seems to indicate that smokers in this age group had a smaller chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being "the incidence rate of exposed and non-exposed groups are equivalent"), which estimated an approximate p-value of \Sexpr{pValue75}. Having received such a large p-value (way over our threshold of 0.05), we believe that the null hypothesis cannot be rejected with certainty: although our data shows that less individuals in the selected demographic suffered from coronary death, it seems too likely that these results were achieved by chance, and thus we could not conclude that smoking had a clear association with the risk of coronary death in this situation.
+      Observing the incidence rate for the age range of 75 to 84 years old, we can see that there were less cases of coronary deaths among the exposed group (roughly \Sexpr{Ir_75smoker} cases a year per 1000 people, to be specific) than among the unexposed or "control" group (which suffered approximately \Sexpr{Ir_75Nonsmoker} cases a year per 1000 people). Comparing the two values, we see that the smokers had an incidence rate about \Sexpr{IRR_75} times as big as non-smokers, a number that seems to indicate that smokers in this age group had a smaller chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being "the incidence rate of exposed and non-exposed groups are equivalent"), which estimated an approximate p-value of \Sexpr{pValue75}. Having received such a large p-value (way over our threshold of 0.05), we believe that the null hypothesis cannot be rejected with certainty: although our data shows that less individuals in the selected demographic suffered from coronary death, it seems too likely that these results were achieved by chance, and thus we could not conclude that smoking had a clear association with the risk of coronary death in this situation.
 
   \end{enumerate}
   \item Create a figure, named Figure 1, as follows:
