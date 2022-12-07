@@ -370,27 +370,28 @@ that provides the following results:
 summary(mod)
 @
 
+
 \item According the the fitted model, complete the following list \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
 \begin{itemize}
-    \item $\hat{\alpha}$ =
-    \item $\hat{\beta_{1}}$ =
-    \item $\hat{\gamma_{1}}$ =
-    \item $\hat{\gamma_{2}}$ =
-    \item $\hat{\gamma_{3}}$ =
-    \item $\hat{\gamma_{4}}$ =
-    \item $\hat{\delta_{1}}$ =
-    \item $\hat{\delta_{2}}$ =
-    \item $\hat{\delta_{3}}$ =
-    \item $\hat{\delta_{4}}$ =
+    \item $\hat{\alpha}$ = \Sexpr{mod$coefficients[['(Intercept)']]}
+    \item $\hat{\beta_{1}}$ = \Sexpr{mod$coefficients[['smokeryes']]}
+    \item $\hat{\gamma_{1}}$ = \Sexpr{mod$coefficients[['age45-54']]}
+    \item $\hat{\gamma_{2}}$ = \Sexpr{mod$coefficients[['age55-64']]}
+    \item $\hat{\gamma_{3}}$ = \Sexpr{mod$coefficients[['age65-74']]}
+    \item $\hat{\gamma_{4}}$ = \Sexpr{mod$coefficients[['age75-84']]}
+    \item $\hat{\delta_{1}}$ = \Sexpr{mod$coefficients[['smokeryes:age45-54']]}
+    \item $\hat{\delta_{2}}$ = \Sexpr{mod$coefficients[['smokeryes:age55-64']]}
+    \item $\hat{\delta_{3}}$ = \Sexpr{mod$coefficients[['smokeryes:age65-74']]}
+    \item $\hat{\delta_{4}}$ = \Sexpr{mod$coefficients[['smokeryes:age75-84']]}
 \end{itemize}
 
 \item Use formula \ref{eq:equation2} and estimates provided by \verb+summary(mod)+ to complete the following list \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
 \begin{itemize}
-    \item $\widehat{IRR}_{35-44}$ = 
-    \item $\widehat{IRR}_{45-54}$ = 
-    \item $\widehat{IRR}_{55-64}$ = 
-    \item $\widehat{IRR}_{65-74}$ = 
-    \item $\widehat{IRR}_{75-84}$ = 
+    \item $\widehat{IRR}_{35-44}$ = \Sexpr{mod$coefficients[['smokeryes']]}
+    \item $\widehat{IRR}_{45-54}$ = \Sexpr{mod$coefficients[['smokeryes']]+mod$coefficients[['smokeryes:age45-54']]}
+    \item $\widehat{IRR}_{55-64}$ = \Sexpr{mod$coefficients[['smokeryes']]+mod$coefficients[['smokeryes:age55-64']]}
+    \item $\widehat{IRR}_{65-74}$ = \Sexpr{mod$coefficients[['smokeryes']]+mod$coefficients[['smokeryes:age65-74']]}
+    \item $\widehat{IRR}_{75-84}$ = \Sexpr{mod$coefficients[['smokeryes']]+mod$coefficients[['smokeryes:age75-84']]}
 \end{itemize}
 
 \item Solve again questions 2. and 3. (only (a), (b) and (c)) in Section \ref{sec:Comparing_incidence_rates}, but using now model \eqref{eq:model}, formula \ref{eq:equation2} and coefficients estimates provided by \verb+summary(mod)+.
