@@ -274,7 +274,13 @@ axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
   \item According to Figure 1:
   \begin{enumerate}
     \item Is the rate ratio greater than 1 for all age groups? What does it mean?
+    \newline 
+    No, it is not. In both plots, age group 75-84 is less than 1. Such as we know, a rate ratio greater than 1 indicates an increased risk
+    for the group, and a rate ratio less than 1 indicates a decreased risk for the group. So, what it means that 75-84 age group has less risk than
+    the others ages groups.
     \item Is the rate ratio constant over age groups? What does it mean?
+    \newline
+    No, it is not. This means that it is correlated with the age.
   \end{enumerate}
 \end{enumerate}
 
