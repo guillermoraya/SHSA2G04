@@ -397,8 +397,6 @@ Note that $I_{r_{ij}}$ is a random variable (different individuals with same smo
 \begin{enumerate}
   \item Note that the logarithm function in model \eqref{eq:model} implies that we are assuming that the incidence rate varies exponentially with age. Is it         consistent with Figure 1? Why?
 
-\textbf{Answer:}
-
 No, it is not consistent with Figure 1. At first, might seem that on the left plot there is plotted an exponential function.           Nevertheless, on the right plot, which is the same function plotted on the log-linear scale, there should be a straight line which clearly it is not.
 
   \item Prove that, under model \eqref{eq:model}, the expected IRR for smokers vs nonsmokers, for a given age group j is:
