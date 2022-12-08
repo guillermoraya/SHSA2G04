@@ -158,6 +158,7 @@ opts_chunk$set(
 In 1961, Doll and Hill\cite{ref1} sent out a questionnaire to all men on the British Medical Register asking about their smoking habits. Almost $70\%$ of such men replied. Death certificates were obtained for medical practitioners and causes of death were assigned on the basis of these certificates. The \Robject{breslow} data set\cite{ref2} (attached in the \Robject{breslow.RData} file) contains the person-years of observations and deaths from coronary artery disease accumulated during the first ten years of the study. Such data are shown in Table \ref{tab:table1}.
 
 <<dataplot, echo=FALSE>>=
+### Data load
 load("./breslow.RData")
 Data <- breslow
 @
@@ -192,15 +193,17 @@ The aim of this exercise is to analyze the relationship between incidence of cor
 \section{Comparing incidence rates}
 \label{sec:Comparing_incidence_rates}
 \begin{enumerate}
-  \item Add extra columns in Table 1 for:
+  \item Add extra columns in Table \ref{tab:table1} for:
   \begin{enumerate}
-    \item $I_{r_{ij}}$, the sample coronary death rates per 1000 person-years for smoke status $i$ ($i = 0$ for nonsmokers and $i = 1$ for smokers) and age group $j$ ($j = 0, 1, ...,4$) for 35-44, 45-54, ..., 75-84, respectively) (two columns).
+    \item $I_{r_{ij}}$, the sample coronary death rates per 1000 person-years for smoke status $i$ ($i = 0$ for nonsmokers and $i = 1$ for smokers) and age group $j$ ($j = 0, 1, ...,4$) for 35-44, 45-54, ..., 75-84, respectively)\footnote{\label{note1}See Appendix \ref{app:Ir and IRR}.} (two columns).
 <<Ir, echo=FALSE>>=
+# Ir implementation 
 Ir_smokers <- Data$deaths[Data$smoker=='yes']/Data$personYears[Data$smoker=='yes']*1000
 Ir_Nonsmokers <- Data$deaths[Data$smoker=='no']/Data$personYears[Data$smoker=='no']*1000
 @
-    \item $IRR_{j} = \frac{I_{r_{1j}}}{I_{r_{0j}}}$, the incidence rate ratio for smokers vs. nonsmokers for the age group $j$ (one column).
+    \item $IRR_{j} = \frac{I_{r_{1j}}}{I_{r_{0j}}}$, the incidence rate ratio for smokers vs. nonsmokers for the age group $j$ \footref{note1} (one column).
 <<IRR, echo=FALSE>>=
+# IRR implementation
 IRR <- Ir_smokers/Ir_Nonsmokers
 @
   \end{enumerate}
@@ -225,15 +228,19 @@ Age & Nonsmokers & Smokers & Nonsmokers & Smokers & Nonsmokers & Smokers & Incid
 \label{tab:table2}
 \end{table}
   
-  \item For age group 45-54, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
+  \item For age group 45-54, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}\footnote{See Appendix \ref{app:IncidenceRates2}.}:
 <<IncidenceRates2, echo=FALSE>>=
-# a)
+
+# The incidence rate among smokers
 Ir_45smoker <- Ir_smokers[2] # coronary deaths a year per 1000 people
-# b)
+
+# The incidence rate among nonsmokers
 Ir_45Nonsmoker <- Ir_Nonsmokers[2] # coronary deaths a year per 1000 people
-# c) 
+
+# The incidence rate ratio
 IRR_45 <- Ir_45smoker/Ir_45Nonsmoker # rate (no units, since it's a dimensionless magnitude)
-# d)
+
+# The p-value of the Wald test
 Data45 <- Data[Data$age=="45-54",]
 pValue45 <- rateratio.wald(x=Data45$deaths,y=Data45$personYears,)$p.value[2,"wald"]
 @
@@ -247,15 +254,19 @@ pValue45 <- rateratio.wald(x=Data45$deaths,y=Data45$personYears,)$p.value[2,"wal
       Observing the incidence rate for the age range of 45 to 54 years old, we can see that there were more cases of coronary deaths among the exposed group (roughly \Sexpr{Ir_45smoker} cases a year per 1000 people, to be specific) than among the unexposed or "control" group (which suffered approximately \Sexpr{Ir_45Nonsmoker} cases a year per 1000 people). Comparing the two figures, we see that the smokers had an incidence rate nearly \Sexpr{IRR_45} times as big as non-smokers, a figure that seems to indicate that smokers in this age group had a bigger chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being "the incidence rate of exposed and non-exposed groups are equivalent"), which estimated an approximate p-value of \Sexpr{pValue45}. Having received a p-value lower than our threshold of 0.05, we believe that the null hypothesis can be rejected: the test suggests that smoking could be associated with an increased incidence rate of coronary death among our selected demographic.
 
   \end{enumerate}
-  \item For age group 75-84, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
+  \item For age group 75-84, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}\footnote{See Appendix \ref{app:IncidenceRates3}.}:
 <<IncidenceRates3, echo=FALSE>>=
-# a)
+
+# The incidence rate among smokers
 Ir_75smoker <- Ir_smokers[5] # coronary deaths a year per 1000 people
-# b)
+
+# The incidence rate among nonsmokers
 Ir_75Nonsmoker <- Ir_Nonsmokers[5] # coronary deaths a year per 1000 people
-# c) 
+
+# The incidence rate ratio
 IRR_75 <- Ir_75smoker/Ir_75Nonsmoker # rate (no units, since it is dimensionless)
-# d)
+
+# The p-value of the Wald test
 Data75 <- Data[Data$age=="75-84",]
 pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wald"]
 @
@@ -279,19 +290,19 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
   \end{enumerate}
 <<IRR_plot,fig.width=7, fig.height=4, fig.cap='\\label{fig:IRR_plot}Plots of the incidence rate ratios depending on the age range.The graph on the left is in linear scale, while the graph on the right is on logarithmic scale.', echo=FALSE>>=
 
+# Division of space into two plots
 par(mfrow = c(1, 2))
 
+# IRR plot in linear scale
 plot(IRR, xaxt = 'n', xlab = 'Age groups', ylab = 'Incidence rate ratios')
-#lines(IRR)
 axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
 
-
+# IRR plot in logarithmic scale
 plot(log = 'y', IRR, xaxt = 'n', xlab = 'Age groups', ylab = 'Incidence rate ratios')
-#lines(IRR)
 axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
 
 @
-  \item According to Figure 1:
+  \item According to Figure \ref{fig:IRR_plot}:
   \begin{enumerate}
     \item Is the rate ratio greater than 1 for all age groups? What does it mean?
     \newline 
@@ -312,7 +323,7 @@ axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
 %%%%%%%%%%%%%%%
 \section{Modeling incidence rates with a Generalized Linear Model}
 \label{sec:Modelling}
-Suppose we are interested in modeling the coronary deaths rate, $I = \frac{I}{\Delta t}$, where \textit{I} is the coronary deaths count and $\Delta t$ is follow-up (in person-years), as a function of smoking status (\textit{E}), which is the exposure of interest, and age group (\textit{A}). We suspect that smoking status could interact with age in the effect on coronary mortality. Hence, we consider the Generalized Linear Model (GLM) \footnote{You can find the \LaTeX code to write model \eqref{eq:model} in the file \Robject{model.tex.}} specified in equations (1) to model the coronary deaths rate for individuals with smoking status \textit{i} and in age group \textit{j}, $I_{r_{ij}}$ :
+Suppose we are interested in modeling the coronary deaths rate, $I = \frac{I}{\Delta t}$, where \textit{I} is the coronary deaths count and $\Delta t$ is follow-up (in person-years), as a function of smoking status (\textit{E}), which is the exposure of interest, and age group (\textit{A}). We suspect that smoking status could interact with age in the effect on coronary mortality. Hence, we consider the Generalized Linear Model (GLM) \footnote{You can find the \LaTeX code to write model \eqref{eq:model} in the file \Robject{model.tex.}} specified in equations \eqref{eq:model} to model the coronary deaths rate for individuals with smoking status \textit{i} and in age group \textit{j}, $I_{r_{ij}}$ :
 
 \begin{equation}
 \label{eq:model}
@@ -418,7 +429,7 @@ Hence,
         \mathbb{E}(IRR_{j}) = \begin{cases} \text{exp}(\beta_{1}), & \mbox{if $j = 0$,} \\ \text{exp}(\beta_{1} + \delta_{1j}), & \mbox{if $j \not= 0$.} \end{cases}\\
 \end{equation}
 \QEDB
-\item According to Figure 1, explain what sign (i.e. positive, negative or zero) do you
+\item According to Figure \ref{fig:IRR_plot}, explain what sign (i.e. positive, negative or zero) do you
 expect for $\delta_{1j}$.
 
 \item Model \eqref{eq:model} can be fitted in \textsf{R} as:
@@ -470,7 +481,7 @@ summary(mod)
 %%%%%%%%%%%%%%%
 \section{Discussion}
 \label{sec:discussion}
-
+Based on the results of this analysis of the \Robject{breslow} data, discuss, in no more than 10 lines, about if smoking is a risk factor for coronary artery disease. Specifically, take into account concepts such as data context, modeling approach, confusion and interaction.
 
 %%%%%%%%%%%%%%%
 %%%
@@ -498,15 +509,43 @@ summary(mod)
 \section{R code}
 \label{app:Rcode}
 
-\subsection{Libraries used and data load.}
-\label{app:Library and data}
+\subsection{Libraries used, data load and, $I_{r_{ij}}$ and $IRR_{j}$ implementation.}
+\label{app:Ir and IRR}
+
 <<echo=TRUE, eval=FALSE, purl=FALSE>>=
 <<libraries>>
 @
 
 <<echo=TRUE, eval=FALSE, purl=FALSE>>=
-<<dataplot>>
+<<dataload>>
 @
+
+<<echo=TRUE, eval=FALSE, purl=FALSE>>=
+<<Ir>>
+@
+
+<<echo=TRUE, eval=FALSE, purl=FALSE>>=
+<<IRR>>
+@
+
+\subsection{Implementation of sentences results for age group 45-54.}
+\label{app:IncidenceRates2}
+<<echo=TRUE, eval=FALSE, purl=FALSE>>=
+<<IncidenceRates2>>
+@
+
+\subsection{Implementation of sentences results for age group 75-84.}
+\label{app:IncidenceRates3}
+<<echo=TRUE, eval=FALSE, purl=FALSE>>=
+<<IncidenceRates3>>
+@
+
+\subsection{Implementation of Figure \ref{fig:IRR_plot}.}
+\label{app:IRR_plot}
+<<echo=TRUE, eval=FALSE, purl=FALSE>>=
+<<IRR_plot>>
+@
+
 
 
 \end{document}
