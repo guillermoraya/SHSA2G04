@@ -314,32 +314,70 @@ axis(1, at = seq(1, 5), labels = c('35-44', '45-54', '55-64', '65-74', '75-84'))
 \label{sec:Modelling}
 Suppose we are interested in modeling the coronary deaths rate, $I = \frac{I}{\Delta t}$, where \textit{I} is the coronary deaths count and $\Delta t$ is follow-up (in person-years), as a function of smoking status (\textit{E}), which is the exposure of interest, and age group (\textit{A}). We suspect that smoking status could interact with age in the effect on coronary mortality. Hence, we consider the Generalized Linear Model (GLM) \footnote{You can find the \LaTeX code to write model \eqref{eq:model} in the file \Robject{model.tex.}} specified in equations (1) to model the coronary deaths rate for individuals with smoking status \textit{i} and in age group \textit{j}, $I_{r_{ij}}$ :
 
-
-\begin{itemize}
-    \item Probability distribution:
-    \begin{fleqn}
-        \begin{alignat*}{3}
-            I_{r_{ij}} = \frac{I_{ij}}{\Delta t_{ij}}, &\qquad I_{ij} \sim \text{Pois}(\lambda_{ij}), &\qquad \Delta t_{ij} \text{ is the follow-up;}
-        \end{alignat*}
-    \end{fleqn}
-
-    \item Model for the mean:
-    \begin{flalign}
-    \label{eq:model}
-        &\text{log} \left(\frac{\lambda_{ij}}{\Delta t_{ij}} \right) = L(E_{i},A_{j}) \text{ (the linear predictor)}&
-    \end{flalign}
-    \begin{flalign*}
-        L(E_{i},A_{j}) &= \alpha + \beta_{i}E_{i} + \gamma_{j}A_{j} + \delta_{ij}E{i}A{j} &\\
-        &= \alpha + &\\
-        &+ \beta_{1}\mathbbm{1}_{i=1} + &\\
-        &+ \gamma_{1}\mathbbm{1}_{j=1} + \gamma_{2}\mathbbm{1}_{i=2} + \gamma_{3}\mathbbm{1}_{i=3} + \gamma_{4}\mathbbm{1}_{i=4} + &\\
-        &+ \delta_{11}\mathbbm{1}_{i=1}\mathbbm{1}_{j=1} + \delta_{12}\mathbbm{1}_{i=1}\mathbbm{1}_{j=2} + \delta_{13}\mathbbm{1}_{i=1}\mathbbm{1}_{j=3} + \delta_{14}\mathbbm{1}_{i=1}\mathbbm{1}_{j=4}, &
-    \end{flalign*}
-\end{itemize}
+\begin{equation}
+\label{eq:model}
+\left\{
+\begin{array}{l}
+\bullet\ \text{Probability distribution:} \\ \\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\qquad
+I_{r_{ij}} = \frac{I_{ij}}{\Delta t_{ij}},
+\qquad
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+I_{ij} \sim  \text{Pois}(\lambda_{ij}),
+\qquad
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\Delta t_{ij}\text{ is the follow-up;}\\ \\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\bullet\ \text{Model for the mean:} \\ \\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\qquad
+\log
+\left( \frac{\lambda_{ij}}{\Delta t_{ij}} \right) = L(E_i, A_j) \text{ (the linear predictor)}\\ \\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\qquad
+L(E_i, A_j) = \alpha + \beta_i E_i + \gamma_j A_j + \delta_{ij} E_i A_j\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\phantom{
+\qquad
+L(E_i, A_j)} = \alpha + \\
+%%%
+\phantom{
+\qquad
+L(E_i, A_j)} + \beta_1 \mathbbm{1}_{i=1} + \\
+%%%
+\phantom{
+\qquad
+L(E_i, A_j)
+} + 
+\gamma_1 \mathbbm{1}_{j=1} +
+\gamma_2 \mathbbm{1}_{j=2} +
+\gamma_3 \mathbbm{1}_{j=3} +
+\gamma_4 \mathbbm{1}_{j=4} +\\
+%%%
+\phantom{
+\qquad
+L(E_i, A_j)
+} + 
+\delta_{11} \mathbbm{1}_{i=1}\mathbbm{1}_{j=1} +
+\delta_{12} \mathbbm{1}_{i=1}\mathbbm{1}_{j=2} +
+\delta_{13} \mathbbm{1}_{i=1}\mathbbm{1}_{j=3} +
+\delta_{14} \mathbbm{1}_{i=1}\mathbbm{1}_{j=4},
+\end{array}
+\right.
+\end{equation}
 where
 \begin{equation*}
-    \mathbbm{1}_{x=a} = \begin{cases} 1, & \mbox{if $x = a$,} \\ 0, & \mbox{if $x \not= a$.} \end{cases}
+\mathbbm{1}_{x=a}
+=
+\left\{
+\begin{array}{ll}
+1, & \text{if } x = a \\
+0, & \text{if } x \neq a
+\end{array}
+\right..
 \end{equation*}
+
 Note that $I_{r_{ij}}$ is a random variable (different individuals with same smoke status and age can suffer or not coronary death within the same follow-up). Hence, the aim of fitting model \eqref{eq:model} is to estimate the expectation (i.e. mean) of the coronary deaths rate as:
 \begin{equation*}
     \mathbb{E}(I_{r_{ij}}) =  \mathbb{E}\left(\frac{I_{ij}}{\Delta t_{ij}}\right) = \frac{\mathbb{E}(I_{ij})}{\Delta t_{ij}} = \frac{\lambda_{ij}}{\Delta t_{ij}} = \text{exp}(L(E_{i},A_{j})).
