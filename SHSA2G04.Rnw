@@ -212,6 +212,7 @@ IRR <- Ir_smokers/Ir_Nonsmokers
   
 <<table2, results = 'asis',echo=TRUE>>=
 
+# Define the dataset
 Age = c(Data$age[1], Data$age[2], Data$age[3], Data$age[4], Data$age[5])
 Nonsmokers_Py = c(Data$personYears[1], Data$personYears[2], 
                   Data$personYears[3],Data$personYears[4], Data$personYears[5])
@@ -229,7 +230,7 @@ IRR_list = c(IRR[1], IRR[2], IRR[3], IRR[4], IRR[5])
 data = data.frame(Age, Nonsmokers_Py, Smokers_Py, Nonsmokers_Cd, Smokers_Cd, 
                   Nonsmokers_Ir, Smokers_Ir, IRR_list)
 
-
+# Create Table 2
 kable(data, 'latex', booktabs = T, row.names = NA,
   col.names = c('Age', 'Nonsmokers', 'Smokers', 
                 'Nonsmokers', 'Smokers', 
@@ -268,7 +269,7 @@ pValue45 <- rateratio.wald(x=Data45$deaths,y=Data45$personYears,)$p.value[2,"wal
     \item The $p$-value of the Wald test to decide if the incidence rate among smokers is the same than among nonsmokers was \Sexpr{pValue45}.
     \item Write a paragraph for the interpretation of previous results (including all quantities):
 
-      Observing the incidence rate for the age range of 45 to 54 years old, we can see that there were more cases of coronary deaths among the exposed group (roughly \Sexpr{Ir_45smoker} cases a year per 1000 people, to be specific) than among the unexposed or "control" group (which suffered approximately \Sexpr{Ir_45Nonsmoker} cases a year per 1000 people). Comparing the two values, we see that the smokers had an incidence rate nearly \Sexpr{IRR_45} times as big as non-smokers, a number that seems to indicate that smokers in this age group had a bigger chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being "the incidence rate of exposed and non-exposed groups are equivalent"), which estimated an approximate p-value of \Sexpr{pValue45}. Having received a p-value lower than our threshold of 0.05, we believe that the null hypothesis can be rejected: the test suggests that smoking could be associated with an increased incidence rate of coronary death among our selected demographic.
+      Observing the incidence rate for the age range of 45 to 54 years old, we can see that there were more cases of coronary deaths among the exposed group (roughly \Sexpr{Ir_45smoker} cases a year per 1000 people, to be specific) than among the unexposed or ``control`` group (which suffered approximately \Sexpr{Ir_45Nonsmoker} cases a year per 1000 people). Comparing the two values, we see that the smokers had an incidence rate nearly \Sexpr{IRR_45} times as big as non-smokers, a number that seems to indicate that smokers in this age group had a bigger chance of suffering from coronary death. In order to check if these results are significant, we have performed a Wald test (the null hypothesis being ``the incidence rate of exposed and non-exposed groups are equivalent``), which estimated an approximate p-value of \Sexpr{pValue45}. Having received a p-value lower than our threshold of 0.05, we believe that the null hypothesis can be rejected: the test suggests that smoking could be associated with an increased incidence rate of coronary death among our selected demographic.
 
   \end{enumerate}
   \item For age group 75-84, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}\footnote{See Appendix \ref{app:IncidenceRates3}.}:
@@ -305,7 +306,7 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
     \item Both plots must include proper labels in both axes and proper ticks labels (for instance, horizontal axis must show labels 35-44, 45-54, ...). \textbf{Hint:} Use \Robject{plot(xaxt = "n", ...)} and then use \Robject{axis(1, at = ..., labels = ...)}.
     \item Figure \ref{fig:IRR_plot} must include a detailed caption.
   \end{enumerate}
-<<IRR_plot,fig.width=7, fig.height=4, fig.cap='\\label{fig:IRR_plot}Plots of the incidence rate ratios depending on the age range.The graph on the left is in linear scale, while the graph on the right is on logarithmic scale.', echo=TRUE>>=
+<<IRR_plot,fig.width=7, fig.height=4, fig.cap='\\label{fig:IRR_plot}Plots of the incidence rate ratios depending on the age range. The graph on the left is in linear scale, while the graph on the right is on logarithmic scale.', echo=TRUE>>=
 
 # Division of space into two plots
 par(mfrow = c(1, 2))
@@ -326,12 +327,12 @@ axis(2, at = ylabels, labels = ylabels)
   \begin{enumerate}
     \item Is the rate ratio greater than 1 for all age groups? What does it mean?
     \newline 
-    No, it is not. In both plots, age group 75-84 is less than 1. Such as we know, a rate ratio greater than 1 indicates an increased risk
-    for the group, and a rate ratio less than 1 indicates a decreased risk for the group. So, what it means that 75-84 age group has less risk than
+    No, it is not. In both plots, in age group 75-84 is less than 1. Such as we know, a rate ratio greater than 1 indicates an increased risk
+    for the group, and a rate ratio less than 1 indicates a decreased risk for the group. So it means that 75-84 age group  could have less risk than
     the others ages groups.
     \item Is the rate ratio constant over age groups? What does it mean?
     \newline
-    No, it is not. This means that it is correlated with the age.
+    No, it is not. This means that the age can affect to the rate ratio.
   \end{enumerate}
 \end{enumerate}
 
@@ -492,6 +493,8 @@ summary(mod)
 \item Solve again questions 2. and 3. (only (a), (b) and (c)) in Section \ref{sec:Comparing_incidence_rates}, but using now model \eqref{eq:model}, formula \ref{eq:equation2} and coefficients estimates provided by \verb+summary(mod)+.
 
 <<values_postmodel,echo=TRUE>>=
+
+# Define variables
 alpha <- mod$coefficients[['(Intercept)']]
 beta1 <- mod$coefficients[['smokeryes']]
 gamma1 <- mod$coefficients[['age45-54']]
@@ -499,7 +502,7 @@ gamma4 <- mod$coefficients[['age75-84']]
 delta1 <- mod$coefficients[['smokeryes:age45-54']]
 delta4 <- mod$coefficients[['smokeryes:age75-84']]
 
-
+# Calculate Ir and IRR
 Ir_45Nonsmoker_model <- exp(alpha + gamma1)*1000
 Ir_45smoker_model <- exp(alpha + beta1 + gamma1 + delta1)*1000
 Ir_75Nonsmoker_model <- exp(alpha + gamma4)*1000
