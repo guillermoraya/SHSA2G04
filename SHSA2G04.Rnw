@@ -94,7 +94,7 @@ opts_chunk$set(
   \vspace{1cm}
   
   \Huge
-  \scshape{Missing data in linear regression models \par}
+  \scshape{Modeling incidence rates with generalized linear models \par}
   \vfill
   
   \vspace{2cm}
