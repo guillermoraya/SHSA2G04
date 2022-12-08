@@ -164,7 +164,7 @@ Data <- breslow
 
 \begin{table}[h]
 \centering
-\begin{tabular}{lrrrrrr}
+\begin{tabular}{crrrrrr}
 \toprule
 \multicolumn{1}{c}{ } & \multicolumn{2}{c}{Person-years} & \multicolumn{2}{c}{Coronary deaths} \\
 \cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5}
@@ -205,6 +205,26 @@ IRR <- Ir_smokers/Ir_Nonsmokers
 @
   \end{enumerate}
   Print the update table as Table 2, with a proper caption.
+  
+\begin{table}[h]
+\centering
+\begin{tabular}{crrrrrrrrr}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{2}{c}{Person-years} & \multicolumn{2}{c}{Coronary deaths} & \multicolumn{2}{c}{Incidence Rate} & \multicolumn{1}{c}{ }\\
+\cmidrule(l{3pt}r{3pt}){2-3} \cmidrule(l{3pt}r{3pt}){4-5} \cmidrule(l{3pt}r{3pt}){6-7}
+Age & Nonsmokers & Smokers & Nonsmokers & Smokers & Nonsmokers & Smokers & Incidence Rate Ratio \\
+\midrule
+\Sexpr{Data$age[1]} & \Sexpr{Data$personYears[1]} & \Sexpr{Data$personYears[6]}  & \Sexpr{Data$deaths[1]} & \Sexpr{Data$deaths[6]} & \Sexpr{Ir_Nonsmokers[1]} & \Sexpr{Ir_smokers[1]} & \Sexpr{IRR[1]}\\
+\Sexpr{Data$age[2]} & \Sexpr{Data$personYears[2]} & \Sexpr{Data$personYears[7]}  & \Sexpr{Data$deaths[2]} & \Sexpr{Data$deaths[7]} & \Sexpr{Ir_Nonsmokers[2]} & \Sexpr{Ir_smokers[2]} & \Sexpr{IRR[2]}\\
+\Sexpr{Data$age[3]} & \Sexpr{Data$personYears[3]} & \Sexpr{Data$personYears[8]}  & \Sexpr{Data$deaths[3]} & \Sexpr{Data$deaths[8]} & \Sexpr{Ir_Nonsmokers[3]} & \Sexpr{Ir_smokers[3]} & \Sexpr{IRR[3]}\\
+\Sexpr{Data$age[4]} & \Sexpr{Data$personYears[4]} & \Sexpr{Data$personYears[9]}  & \Sexpr{Data$deaths[4]} & \Sexpr{Data$deaths[9]} & \Sexpr{Ir_Nonsmokers[4]} & \Sexpr{Ir_smokers[4]} & \Sexpr{IRR[4]}\\
+\Sexpr{Data$age[5]} & \Sexpr{Data$personYears[5]} & \Sexpr{Data$personYears[10]} & \Sexpr{Data$deaths[5]} & \Sexpr{Data$deaths[10]} & \Sexpr{Ir_Nonsmokers[5]} & \Sexpr{Ir_smokers[5]} & \Sexpr{IRR[5]}\\
+\bottomrule
+\end{tabular}
+\caption{Data on coronary death rates including incidence rate depending on somke status and incidence rate ratio.}
+\label{tab:table2}
+\end{table}
+  
   \item For age group 45-54, complete the following sentences with numbers and proper units \textbf{(using} \verb+\Sexpr+ \textbf{in your \Robject{Rnw} document)}:
 <<IncidenceRates2, echo=FALSE>>=
 # a)
