@@ -305,7 +305,7 @@ pValue75 <- rateratio.wald(x=Data75$deaths,y=Data75$personYears,)$p.value[2,"wal
     \item Both plots must include proper labels in both axes and proper ticks labels (for instance, horizontal axis must show labels 35-44, 45-54, ...). \textbf{Hint:} Use \Robject{plot(xaxt = "n", ...)} and then use \Robject{axis(1, at = ..., labels = ...)}.
     \item Figure \ref{fig:IRR_plot} must include a detailed caption.
   \end{enumerate}
-<<IRR_plot,fig.width=7, fig.height=4, fig.cap='\\label{fig:IRR_plot}Plots of the incidence rate ratios depending on the age range.The graph on the left is in linear scale, while the graph on the right is on logarithmic scale.', echo=FALSE>>=
+<<IRR_plot,fig.width=7, fig.height=4, fig.cap='\\label{fig:IRR_plot}Plots of the incidence rate ratios depending on the age range.The graph on the left is in linear scale, while the graph on the right is on logarithmic scale.', echo=TRUE>>=
 
 # Division of space into two plots
 par(mfrow = c(1, 2))
