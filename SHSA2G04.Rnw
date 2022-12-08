@@ -430,7 +430,7 @@ Hence,
 \item According to Figure \ref{fig:IRR_plot}, explain what sign (i.e. positive, negative or zero) do you
 expect for $\delta_{1j}$.
 
-In Figure \ref{fig:IRR_plot} we can see that both graphics are decreasing. That means that, if we increase the age groups (i.e. \textit{j} value), IRR decreases. If $j = 0$, we do not have any $\delta_{1j}$ value, which is equivalent to saying that $\delta_{1j} = 0$. Therefore, $\delta_{1j}$ has to be negative when $j > 0$ make IRR value decrease. In fact, $\delta_{1j}$ will have lower values as \textit{j} becomes larger.
+In Figure \ref{fig:IRR_plot} we can see that both graphics are decreasing. That means that, if we increase the age groups (i.e. \textit{j} value), IRR decreases. If $j = 0$, we do not have any $\delta_{1j}$ value, which is equivalent to saying that $\delta_{1j} = 0$. Therefore, $\delta_{1j}$ has to be negative when $j > 0$ to make IRR value decrease. In fact, $\delta_{1j}$ will have lower values as \textit{j} becomes larger.
 
 \item Model \eqref{eq:model} can be fitted in \textsf{R} as:
 <<modelFit>>=
